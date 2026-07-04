@@ -1,0 +1,62 @@
+<div class="max-w-7xl mx-auto p-6">
+  <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Nuevos Lanzamientos</h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+    @for (producto of productos(); track producto.id) {  
+      <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between h-full group">
+
+        <!-- Imagen y Título -->
+        <div>
+          <div class="relative w-full h-48 mb-4 flex items-center justify-center p-2 bg-white rounded-lg">
+
+            <img [src]="producto.image" [alt]="producto.title" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300" />
+            <span class="absolute top-0 right-0 bg-gray-900 text-white text-xs uppercase font-bold px-2.5 py-1 rounded-full opacity-80 shadow">
+              {{ producto.category }}
+            </span>
+          </div>
+          <h3 class="font-bold text-gray-800 text-lg line-clamp-2 mt-1 mb-2" [title]="producto.title">
+            {{ producto.title }}
+          </h3>
+        </div>
+
+        <!-- Rating y Botón -->
+        <div class="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-3">
+          
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1">
+              <!-- Componente Rating de PrimeNG -->
+              <p-rating [(ngModel)]="producto.rating.rate" [readonly]="true"/>
+              <span class="text-xs text-gray-500 font-semibold">({{ producto.rating.count }})</span>
+            </div>
+            <span class="text-xl font-extrabold text-blue-600">
+              {{ producto.price | currency:'USD' }}
+            </span>
+          </div>
+          
+          <!-- Control Flow evaluando stock -->
+          @if (producto.stock && producto.stock > 0) {
+            <p-button 
+              label="Agregar" 
+              icon="pi pi-cart-plus" 
+              styleClass="w-full font-bold" />
+          } @else {
+            <p-button 
+              label="Agotado" 
+              icon="pi pi-times" 
+              severity="danger" 
+              [disabled]="true" 
+              styleClass="w-full font-bold" />
+          }
+        </div>
+
+      </div>
+    } @empty {
+      <div class="col-span-full text-center py-10 text-gray-500 flex flex-col items-center gap-3">
+        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+        <p>Cargando catálogo...</p>
+      </div>
+    }
+
+  </div>
+</div>

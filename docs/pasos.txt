@@ -1,0 +1,74 @@
+Pasos instalar angular
+
+Tener node js 20+
+
+Instalar angular 21 de forma global
+
+npm install -g @angular/cli@21
+
+Validar version
+
+ng version
+
+instala el nuevo gestor de paquetes de forma global usando el npm tradicional.
+
+npm install -g pnpm
+
+Conectar Angular con pnpm
+
+ng config -g cli.packageManager pnpm
+
+Si ya configuraste pnpm de forma global puedes instalar nuevas caracteristicas o versions:
+
+pnpm add -g @angular/cli@21
+
+con npnm tenes una una version instalada y ahi toma siempre nuestro commando ng new cuando creamos un nuevo Proyecto, queda unificado, ademas con add Podemos agregar nuevas librerias de forma global.
+
+agregar Nueva libreria
+
+pnpm add bootstrap
+
+crear proyecto
+ng new mi-proyecto-angular
+
+crear sin instalar dependencias
+
+ng new mi-proyecto-angular --skip-install
+
+En lugar del npm install tradicional, pueden entrar a su carpeta y usar:
+
+pnpm install --offline
+
+Actualizar version de Proyecto:
+
+ng update @angular/core@^21 @angular/cli@^21
+
+
+
+
+Primero Proyecto angular fakestore
+
+Preparativos
+
+ng new fake-store-app --skip-install
+
+Opciones a elegir en la conssola :
+
+Tailwind CSS por que usaremos PrimeNG
+
+
+
+cd fake-store-app
+pnpm install
+
+git init 
+git status
+git add .
+git commit -m "chore: inicialización del proyecto E-commerce con Angular 21 y PrimeNG"
+
+Instalar PrimeNG y sus Iconos
+
+Abre la terminal en la raíz de tu proyecto fake-store-app y ejecuta el comando de instalación con tu nuevo gestor de paquetes:
+
+pnpm add primeng primeicons
+
