@@ -1,9 +1,43 @@
 <div class="max-w-7xl mx-auto p-6">
   <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Nuevos Lanzamientos</h1>
 
+  <section class="mb-6 space-y-4" aria-label="Filtros del catálogo">
+    <div class="flex flex-wrap gap-2">
+      <button
+        pButton
+        type="button"
+        size="small"
+        [severity]="categoriaSeleccionada() === 'Todas' ? 'contrast' : 'secondary'"
+        (click)="seleccionarCategoria('Todas')"
+        label="Todas"
+      ></button>
+
+      @for (categoria of categorias(); track categoria) {
+        <button
+          pButton
+          type="button"
+          size="small"
+          [severity]="categoriaSeleccionada() === categoria ? 'contrast' : 'secondary'"
+          [label]="categoria"
+          (click)="seleccionarCategoria(categoria)"
+        ></button>
+      }
+    </div>
+
+    <label class="sr-only" for="search-products">Buscar productos</label>
+    <input
+      id="search-products"
+      type="search"
+      class="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-900 outline-none ring-0 focus:border-blue-500"
+      placeholder="Buscar por nombre o descripción"
+      [value]="busqueda()"
+      (input)="actualizarBusqueda($event)"
+    />
+  </section>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-    @for (producto of productos(); track producto.id) {  
+    @for (producto of productosFiltrados(); track producto.id) {
       <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between h-full group">
 
         <!-- Imagen y Título -->
@@ -39,6 +73,7 @@
             <p-button 
               label="Agregar" 
               icon="pi pi-cart-plus" 
+              (onClick)="agregarProducto(producto.id)"
               styleClass="w-full font-bold" />
           } @else {
             <p-button 
@@ -53,8 +88,8 @@
       </div>
     } @empty {
       <div class="col-span-full text-center py-10 text-gray-500 flex flex-col items-center gap-3">
-        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
-        <p>Cargando catálogo...</p>
+        <i class="pi pi-search" style="font-size: 2rem"></i>
+        <p>No hay productos para ese filtro.</p>
       </div>
     }
 

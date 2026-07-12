@@ -21,4 +21,8 @@ export class ProductService {
       })))
     );
   }
+
+  getCategories() {
+    return this.http.get<string[]>(`${this.apiUrl}/products/categories`);
+  }
 }
