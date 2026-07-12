@@ -57,7 +57,6 @@ Opciones a elegir en la conssola :
 Tailwind CSS por que usaremos PrimeNG
 
 
-
 cd fake-store-app
 pnpm install
 
