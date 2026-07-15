@@ -1,3 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+.app-icon {
+	color: var(--p-text-color);
+}
+
+.app-icon-btn.p-button {
+	color: var(--p-text-color, #0f172a);
+	border-color: var(--p-surface-300, #cbd5e1);
+	background: var(--p-content-background, #ffffff);
+	width: 2rem;
+	height: 2rem;
+	padding: 0;
+}
+
+.app-icon-btn.p-button .p-button-icon {
+	color: currentColor;
+}
+
+.app-icon-btn.p-button:hover {
+	background: var(--p-surface-100, #f1f5f9);
+}
+
+.app-icon-btn-danger.p-button {
+	color: var(--p-red-600, #dc2626);
+	border-color: var(--p-red-300, #fca5a5);
+	background: var(--p-content-background, #ffffff);
+	width: 2rem;
+	height: 2rem;
+	padding: 0;
+}
+
+.app-icon-btn-danger.p-button .p-button-icon {
+	color: currentColor;
+}
+
+.app-icon-btn-danger.p-button:hover {
+	background: #fff1f2;
+}

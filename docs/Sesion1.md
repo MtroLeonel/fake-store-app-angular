@@ -118,11 +118,160 @@ En la plantilla `catalogo.html` implementamos:
 4. El catálogo se puede filtrar por categoría.
 5. La búsqueda filtra por título o descripción sin recargar la página.
 
-### Siguiente sesión sugerida
+## Sesión 3: Vista de Carrito, Persistencia y Checkout Básico
 
-Para la **Sesión 3** podemos implementar:
+En esta sesión llevamos el flujo de compra al siguiente nivel, agregando una vista dedicada del carrito, persistencia local y un checkout funcional de alcance inicial.
 
-1. Vista dedicada del carrito (detalle, incrementar/decrementar, eliminar).
-2. Persistencia local con `localStorage`.
-3. Flujo básico de checkout.
+### Objetivos de la sesión
+
+1. Construir una vista dedicada del carrito con detalle y edición de cantidades.
+2. Persistir el estado del carrito con `localStorage`.
+3. Implementar un flujo básico de checkout con validación mínima.
+
+### Paso 1: Evolución del `CartService`
+
+Se amplió `src/app/features/catalogo/services/cart.ts` para soportar operaciones completas:
+
+1. `increment(productId)`: aumenta la cantidad de un ítem.
+2. `decrement(productId)`: reduce la cantidad y elimina el ítem si llega a 0.
+3. `remove(productId)`: elimina un producto específico del carrito.
+4. `clear()`: vacía el carrito.
+
+Además, se agregó persistencia local:
+
+1. Carga inicial desde `localStorage` al crear el servicio.
+2. Guardado automático de cambios del carrito usando `effect()`.
+3. Sanitización básica de datos persistidos para evitar estados inválidos.
+
+### Paso 2: Vista dedicada del carrito
+
+Se creó el componente:
+
+- `src/app/features/catalogo/components/carrito/carrito.ts`
+- `src/app/features/catalogo/components/carrito/carrito.html`
+- `src/app/features/catalogo/components/carrito/carrito.css`
+
+Esta vista incluye:
+
+1. Listado de productos agregados.
+2. Controles para incrementar/decrementar cantidad por ítem.
+3. Acción para eliminar productos del carrito.
+4. Botón para vaciar carrito.
+5. Resumen de compra (productos, subtotal, envío, total).
+6. Estado vacío con acceso de regreso al catálogo.
+
+### Paso 3: Checkout básico
+
+Se creó el componente:
+
+- `src/app/features/catalogo/components/checkout/checkout.ts`
+- `src/app/features/catalogo/components/checkout/checkout.html`
+- `src/app/features/catalogo/components/checkout/checkout.css`
+
+El flujo implementado permite:
+
+1. Capturar datos mínimos del comprador con `ReactiveForms`.
+2. Validar nombre, correo, dirección y ciudad.
+3. Mostrar resumen del pedido antes de confirmar.
+4. Confirmar compra y limpiar el carrito.
+5. Mostrar estado de éxito tras completar checkout.
+
+### Paso 4: Rutas y navegación
+
+Se actualizaron rutas para habilitar el flujo de compra completo:
+
+- `src/app/app.routes.ts`
+
+Nuevas rutas:
+
+1. `/carrito`
+2. `/checkout`
+
+También se conectó el ícono del carrito del navbar para navegar a `/carrito`:
+
+- `src/app/shared/components/navbar/navbar.html`
+
+### Archivos modificados y creados en esta sesión
+
+1. `src/app/features/catalogo/services/cart.ts`
+2. `src/app/app.routes.ts`
+3. `src/app/shared/components/navbar/navbar.html`
+4. `src/app/features/catalogo/components/carrito/carrito.ts`
+5. `src/app/features/catalogo/components/carrito/carrito.html`
+6. `src/app/features/catalogo/components/carrito/carrito.css`
+7. `src/app/features/catalogo/components/checkout/checkout.ts`
+8. `src/app/features/catalogo/components/checkout/checkout.html`
+9. `src/app/features/catalogo/components/checkout/checkout.css`
+
+### Resultado esperado
+
+1. El usuario puede entrar a una vista dedicada del carrito.
+2. Puede incrementar, decrementar y eliminar ítems.
+3. El contenido del carrito se conserva al recargar el navegador.
+4. Puede completar un checkout básico con confirmación de compra.
+
+### Nota
+
+La **Sesión 4** (inicio de sesión y guards) queda pendiente y no fue implementada en este avance.
+
+## Sesión 4: Inicio de Sesión y Guards de Rutas (Plan)
+
+Esta sesión se documenta como siguiente etapa para cerrar seguridad de navegación y control de acceso.
+
+### Objetivos de la sesión
+
+1. Implementar login/logout básico con estado global reactivo.
+2. Proteger rutas privadas con guards.
+3. Restringir la ruta de login cuando el usuario ya tenga sesión activa.
+4. Mantener persistencia de sesión entre recargas.
+
+### Paso 1: Crear estado de autenticación
+
+1. Crear `AuthService` con signals para manejar usuario y estado autenticado.
+2. Definir métodos `login()`, `logout()` y `isAuthenticated()`.
+3. Guardar y recuperar sesión desde `localStorage`.
+
+### Paso 2: Crear vista de login
+
+1. Crear componente de login con `ReactiveForms`.
+2. Validar correo y contraseña.
+3. Mostrar mensajes de error para credenciales inválidas.
+4. Redirigir al catálogo o al checkout según flujo de navegación.
+
+### Paso 3: Implementar guards
+
+1. Crear `AuthGuard`: permite rutas privadas solo a usuarios autenticados.
+2. Crear `GuestGuard`: bloquea `/login` si el usuario ya inició sesión.
+3. Redirigir según corresponda (`/login` o `/`).
+
+### Paso 4: Integrar rutas protegidas
+
+1. Marcar rutas privadas con `canActivate`.
+2. Proteger como mínimo `carrito` y `checkout`.
+3. Mantener login como ruta pública inicial para usuario sin sesión.
+
+### Paso 5: Ajustar navbar y experiencia de usuario
+
+1. Mostrar botón de cerrar sesión cuando exista sesión activa.
+2. Mostrar acceso a iniciar sesión cuando no haya sesión.
+3. Mantener consistencia visual y de navegación con el resto de la app.
+
+### Archivos sugeridos para esta sesión
+
+1. `src/app/features/auth/services/auth.ts`
+2. `src/app/features/auth/components/login/login.ts`
+3. `src/app/features/auth/components/login/login.html`
+4. `src/app/features/auth/components/login/login.css`
+5. `src/app/core/guards/auth.guard.ts`
+6. `src/app/core/guards/guest.guard.ts`
+7. `src/app/app.routes.ts`
+8. `src/app/shared/components/navbar/navbar.ts`
+9. `src/app/shared/components/navbar/navbar.html`
+
+### Resultado esperado
+
+1. Usuario sin sesión no puede acceder a rutas protegidas.
+2. Usuario con sesión puede navegar a carrito y checkout.
+3. La sesión se mantiene al recargar la app.
+4. El flujo de login/logout queda integrado al navbar y rutas.
 

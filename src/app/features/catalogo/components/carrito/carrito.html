@@ -1,0 +1,114 @@
+<section class="mx-auto max-w-7xl p-6">
+  <h1 class="mb-6 text-3xl font-extrabold text-slate-900">Tu carrito</h1>
+
+  @if (items().length > 0) {
+    <div class="grid gap-6 lg:grid-cols-[2fr_1fr]">
+      <div class="space-y-4">
+        @for (item of items(); track item.product.id) {
+          <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <img
+                [src]="item.product.image"
+                [alt]="item.product.title"
+                class="h-20 w-20 rounded-md object-contain"
+              />
+
+              <div class="min-w-0 flex-1">
+                <h2 class="line-clamp-2 text-base font-bold text-slate-800">{{ item.product.title }}</h2>
+                <p class="text-sm text-slate-600">{{ item.product.price | currency:'USD' }} c/u</p>
+              </div>
+
+              <div class="flex items-center gap-2" aria-label="Control de cantidad">
+                <p-button
+                  icon="pi pi-minus"
+                  severity="secondary"
+                  size="small"
+                  [outlined]="true"
+                  styleClass="app-icon-btn"
+                  [attr.aria-label]="'Disminuir cantidad de ' + item.product.title"
+                  (onClick)="decrement(item.product.id)"
+                />
+
+                <span class="inline-flex min-w-8 justify-center text-sm font-bold text-slate-800">
+                  {{ item.quantity }}
+                </span>
+
+                <p-button
+                  icon="pi pi-plus"
+                  severity="secondary"
+                  size="small"
+                  [outlined]="true"
+                  styleClass="app-icon-btn"
+                  [attr.aria-label]="'Aumentar cantidad de ' + item.product.title"
+                  (onClick)="increment(item.product.id)"
+                />
+              </div>
+
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                size="small"
+                [outlined]="true"
+                styleClass="app-icon-btn-danger"
+                [attr.aria-label]="'Eliminar ' + item.product.title + ' del carrito'"
+                (onClick)="remove(item.product.id)"
+              />
+            </div>
+          </article>
+        }
+      </div>
+
+      <aside class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 class="mb-4 text-lg font-bold text-slate-900">Resumen</h2>
+
+        <div class="space-y-2 text-sm text-slate-700">
+          <p class="flex items-center justify-between">
+            <span>Productos</span>
+            <span>{{ totalItems() }}</span>
+          </p>
+          <p class="flex items-center justify-between">
+            <span>Subtotal</span>
+            <span>{{ subtotal() | currency:'USD' }}</span>
+          </p>
+          <p class="flex items-center justify-between">
+            <span>Envío</span>
+            <span>{{ shipping() | currency:'USD' }}</span>
+          </p>
+        </div>
+
+        <hr class="my-4 border-slate-200" />
+
+        <p class="mb-4 flex items-center justify-between text-base font-bold text-slate-900">
+          <span>Total</span>
+          <span>{{ total() | currency:'USD' }}</span>
+        </p>
+
+        <a
+          routerLink="/checkout"
+          class="mb-2 inline-flex w-full items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+        >
+          Ir a checkout
+        </a>
+
+        <p-button
+          label="Vaciar carrito"
+          severity="secondary"
+          [outlined]="true"
+          styleClass="w-full"
+          (onClick)="clear()"
+        />
+      </aside>
+    </div>
+  } @else {
+    <div class="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center">
+      <h2 class="text-xl font-bold text-slate-900">Tu carrito esta vacio</h2>
+      <p class="mt-2 text-sm text-slate-600">Agrega productos desde el catalogo para continuar.</p>
+      <a
+        routerLink="/"
+        class="mt-5 inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+      >
+        Volver al catalogo
+      </a>
+    </div>
+  }
+</section>
